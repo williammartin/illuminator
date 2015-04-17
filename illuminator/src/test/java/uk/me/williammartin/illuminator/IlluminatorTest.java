@@ -27,12 +27,12 @@ public class IlluminatorTest {
 
         Assert.assertEquals(NAME, testPerson.getName());
     }
-
+    
     @Test
-    public void constructShouldInstantiateClassAndPassTwoArguments() {
+    public void constructShouldInstantiateClassAndPassPrimitiveArgument() {
 
         String NAME = "Robert Paulson";
-        Integer AGE = 30;
+        int AGE = 30;
 
         Person testPerson = Illuminator
                                 .illuminate(Person.class)

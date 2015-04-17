@@ -5,7 +5,7 @@ public class Person {
     public static final String DEFAULT_NAME = "JOHN DOE";
 
     private final String name;
-    private Integer age;
+    private int age;
 
     public Person() {
         this(DEFAULT_NAME);
@@ -15,7 +15,7 @@ public class Person {
         this.name = name;
     }
 
-    public Person(String name, Integer age) {
+    public Person(String name, int age) {
         this.name = name;
         this.age = age;
     }
@@ -24,7 +24,7 @@ public class Person {
         return name;
     }
 
-    public Integer getAge() {
+    public int getAge() {
         return age;
     }
 }
