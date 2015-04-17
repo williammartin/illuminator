@@ -38,7 +38,7 @@ public class Illuminator<T> {
      * @return A new object of the class the Illuminator object is wrapping
      */
     @SuppressWarnings("unchecked")
-    public T construct(Object... args) {
+    public T construct(Object... args) throws IlluminatorException {
 
         try {
             Constructor<?> constructor = findConstructor(args);
@@ -49,8 +49,7 @@ public class Illuminator<T> {
     }
 
     // Let's find a constructor that is an exact match for the args passed in
-    private Constructor<?> findConstructor(Object... args)
-            throws IlluminatorException {
+    private Constructor<?> findConstructor(Object... args) throws IlluminatorException {
 
         Class<?>[] argTypes = getTypes(args);
 
