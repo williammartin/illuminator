@@ -2,9 +2,14 @@ package uk.me.williammartin.illuminator;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
+import java.util.Optional;
+
+import org.apache.commons.lang3.ClassUtils;
 
 /**
- * @author William Martin This is the entry point for the Illuminator library.
+ * This is the entry point for the Illuminator library.
+ * 
+ * @author William Martin 
  * @param <T>
  */
 public class Illuminator<T> {
@@ -36,6 +41,9 @@ public class Illuminator<T> {
      * @param args
      *            The arguments to be passed to the class constructor
      * @return A new object of the class the Illuminator object is wrapping
+     * @throws IlluminatorException
+     *             thrown if a constructor cannot be found or class cannot be
+     *             instantiated for some reason
      */
     @SuppressWarnings("unchecked")
     public T construct(Object... args) throws IlluminatorException {
@@ -48,7 +56,9 @@ public class Illuminator<T> {
         }
     }
 
-    // Let's find a constructor that is an exact match for the args passed in
+    // Constructor searching method:
+    //    1. Find an exact matching constructor based on types
+    //    2. Look for first constructor that matches close argument types e.g. boxed primitives
     private Constructor<?> findConstructor(Object... args) throws IlluminatorException {
 
         Class<?>[] argTypes = getTypes(args);
@@ -56,10 +66,36 @@ public class Illuminator<T> {
         try {
             return clazz.getConstructor(argTypes);
         } catch (NoSuchMethodException e) {
-            throw new IlluminatorException(e);
+            
+            Constructor<?>[] constructors = clazz.getConstructors();
+            
+            Optional<Constructor<?>> firstMatchingConstructor = Arrays
+                                                                   .stream(constructors)
+                                                                   .filter(constructor -> constructor.getParameterCount() == args.length)
+                                                                   .filter(constructor -> doArgTypesMatch(constructor.getParameterTypes(), argTypes))
+                                                                   .findFirst();
+            
+            return firstMatchingConstructor.orElseThrow(() -> new IlluminatorException(e));
         }
     }
-
+    
+    private boolean doArgTypesMatch(Class<?>[] constructorTypes, Class<?>[] passedTypes) {
+        
+        for (int i = 0; i < constructorTypes.length; i++) {
+            
+            Class<?> constructorType = constructorTypes[i];
+            Class<?> passedType = passedTypes[i];
+            
+            Class<?> wrappedConstructorType = ClassUtils.primitiveToWrapper(constructorType);
+            
+            if (!wrappedConstructorType.isAssignableFrom(passedType)) {
+                return false;
+            }   
+        }
+        
+        return true;
+    }
+    
     // Convert the objects args to their respective class types
     private Class<?>[] getTypes(Object... args) {
 
