@@ -1,0 +1,10 @@
+#! /usr/bin/env bash
+
+source /vagrant/provision/constants.sh
+
+echo "Running additions to .profile"
+
+# ensure we `vagrant ssh` into the project directory
+cd $PROJECT_DIR/illuminator
+
+echo -e "Run 'mvn test' to get started"
