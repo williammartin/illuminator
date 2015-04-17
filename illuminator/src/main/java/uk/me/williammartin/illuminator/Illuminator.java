@@ -64,9 +64,10 @@ public class Illuminator<T> {
     // Convert the objects args to their respective class types
     private Class<?>[] getTypes(Object... args) {
 
-        Class<?>[] classes = Arrays.stream(args)
-                                    .map(arg -> arg.getClass())
-                                    .toArray(Class<?>[]::new);
+        Class<?>[] classes = Arrays
+                                 .stream(args)
+                                 .map(arg -> arg.getClass())
+                                 .toArray(Class<?>[]::new);
 
         return classes;
     }
