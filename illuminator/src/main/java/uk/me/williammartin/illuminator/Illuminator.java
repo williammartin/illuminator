@@ -7,7 +7,9 @@ import java.util.Optional;
 import org.apache.commons.lang3.ClassUtils;
 
 /**
- * @author William Martin This is the entry point for the Illuminator library.
+ * This is the entry point for the Illuminator library.
+ * 
+ * @author William Martin 
  * @param <T>
  */
 public class Illuminator<T> {
@@ -39,6 +41,9 @@ public class Illuminator<T> {
      * @param args
      *            The arguments to be passed to the class constructor
      * @return A new object of the class the Illuminator object is wrapping
+     * @throws IlluminatorException
+     *             thrown if a constructor cannot be found or class cannot be
+     *             instantiated for some reason
      */
     @SuppressWarnings("unchecked")
     public T construct(Object... args) throws IlluminatorException {
