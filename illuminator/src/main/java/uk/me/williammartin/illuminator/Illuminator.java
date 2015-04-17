@@ -81,7 +81,9 @@ public class Illuminator<T> {
             Class<?> constructorType = constructorTypes[i];
             Class<?> passedType = passedTypes[i];
             
-            if (!passedType.isAssignableFrom(ClassUtils.primitiveToWrapper(constructorType))) {
+            Class<?> wrappedConstructorType = ClassUtils.primitiveToWrapper(constructorType);
+            
+            if (!wrappedConstructorType.isAssignableFrom(passedType)) {
                 return false;
             }   
         }
