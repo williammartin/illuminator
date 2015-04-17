@@ -15,6 +15,28 @@ Then, navigate into the illuminator project directory and run:
 
 You must have maven installed and available on your path or the previous step will fail.
 
+# How do I use it?
+
+Right now, Illuminator is in very early stages and doesn't support much functionality. Here is an example of how you might create an instance of a Class.
+    
+```java
+import uk.me.williammartin.illuminator.Illuminator;
+    
+SomeClass someObject = Illuminator
+                        .illuminate(SomeClass.class)
+                        .construct();
+```
+
+You can also pass arguments to the constructor as simply as:
+    
+```java
+import uk.me.williammartin.illuminator.Illuminator;
+    
+SomeClass someObject = Illuminator
+                        .illuminate(SomeClass.class)
+                        .construct("Hello", "World!");
+```
+
 Good luck!
 
 
