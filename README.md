@@ -9,11 +9,30 @@ First, clone this repository:
 
     git clone https://github.com/williammartin/illuminator.git
 
-Then, navigate into the illuminator project directory and run:
+Then navigate into the illuminator project directory. Your next steps depend on whether you choose to run locally or in a VM.
+
+## Running Locally
+
+*Requirements:*
+- Java 8
+- Maven
+
+Run:
 
     mvn test
 
-You must have maven installed and available on your path or the previous step will fail.
+## Using Vagrant
+
+*Requirements:*
+
+- Vagrant
+- VirtualBox
+
+Run:
+
+    vagrant up
+    vagrant ssh
+    mvn test
 
 # How do I use it?
 
