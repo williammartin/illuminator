@@ -8,8 +8,8 @@ import org.apache.commons.lang3.ClassUtils;
 
 /**
  * This is the entry point for the Illuminator library.
- * 
- * @author William Martin 
+ *
+ * @author William Martin
  * @param <T>
  */
 public class Illuminator<T> {
@@ -17,7 +17,7 @@ public class Illuminator<T> {
     /**
      * This is a static utility method and the entry point for illuminating on
      * classes
-     * 
+     *
      * @param clazz
      *            The class to illuminate
      * @return An instance of Illuminator wrapping the class to illuminate
@@ -35,9 +35,9 @@ public class Illuminator<T> {
     /**
      * The construct method corresponds loosely to a constructor.newInstance(),
      * creating a new object of the class the Illuminator object is wrapping
-     * 
+     *
      * Currently this cannot deal with primitive arguments
-     * 
+     *
      * @param args
      *            The arguments to be passed to the class constructor
      * @return A new object of the class the Illuminator object is wrapping
@@ -47,7 +47,7 @@ public class Illuminator<T> {
      */
     @SuppressWarnings("unchecked")
     public T construct(Object... args) throws IlluminatorException {
-
+        args = toArray(args);
         try {
             Constructor<?> constructor = findConstructor(args);
             return (T) constructor.newInstance(args);
@@ -59,51 +59,57 @@ public class Illuminator<T> {
     // Constructor searching method:
     //    1. Find an exact matching constructor based on types
     //    2. Look for first constructor that matches close argument types e.g. boxed primitives
-    private Constructor<?> findConstructor(Object... args) throws IlluminatorException {
-
+    private Constructor<?> findConstructor(final Object... args) throws IlluminatorException {
         Class<?>[] argTypes = getTypes(args);
 
         try {
             return clazz.getConstructor(argTypes);
         } catch (NoSuchMethodException e) {
-            
+
             Constructor<?>[] constructors = clazz.getConstructors();
-            
+
             Optional<Constructor<?>> firstMatchingConstructor = Arrays
                                                                    .stream(constructors)
                                                                    .filter(constructor -> constructor.getParameterCount() == args.length)
                                                                    .filter(constructor -> doArgTypesMatch(constructor.getParameterTypes(), argTypes))
                                                                    .findFirst();
-            
+
             return firstMatchingConstructor.orElseThrow(() -> new IlluminatorException(e));
         }
     }
-    
-    private boolean doArgTypesMatch(Class<?>[] constructorTypes, Class<?>[] passedTypes) {
-        
+
+    private static boolean doArgTypesMatch(Class<?>[] constructorTypes, Class<?>[] passedTypes) {
+
         for (int i = 0; i < constructorTypes.length; i++) {
-            
+
             Class<?> constructorType = constructorTypes[i];
             Class<?> passedType = passedTypes[i];
-            
+
             Class<?> wrappedConstructorType = ClassUtils.primitiveToWrapper(constructorType);
-            
-            if (!wrappedConstructorType.isAssignableFrom(passedType)) {
+
+            if (passedType != null // skip if null, return the first constructor that matches the rest of the args types
+                && !wrappedConstructorType.isAssignableFrom(passedType)) {
                 return false;
-            }   
+            }
         }
-        
+
         return true;
     }
-    
+
     // Convert the objects args to their respective class types
-    private Class<?>[] getTypes(Object... args) {
+    private static Class<?>[] getTypes(Object... args) {
 
         Class<?>[] classes = Arrays
                                  .stream(args)
-                                 .map(arg -> arg.getClass())
+                                 .map(arg -> arg == null ? null : arg.getClass()) // we can try to match even with a null arg type
                                  .toArray(Class<?>[]::new);
 
         return classes;
+    }
+
+    // Passing null to a varargs method gives a null rather than an array containing null.
+    // This fixes that.
+    private static Object[] toArray(Object... args) {
+        return (args == null ? new Object[1] : args);
     }
 }

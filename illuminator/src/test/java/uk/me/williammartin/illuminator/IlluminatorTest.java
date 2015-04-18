@@ -27,7 +27,7 @@ public class IlluminatorTest {
 
         Assert.assertEquals(NAME, testPerson.getName());
     }
-    
+
     @Test
     public void constructShouldInstantiateClassAndPassPrimitiveArgument() {
 
@@ -40,5 +40,15 @@ public class IlluminatorTest {
 
         Assert.assertEquals(NAME, testPerson.getName());
         Assert.assertEquals(AGE, testPerson.getAge());
+    }
+
+    @Test
+    public void constructShouldDoSomethingSensibleWithNullArguments() {
+
+        Person testPerson = Illuminator
+                                .illuminate(Person.class)
+                                .construct(null);
+
+        Assert.assertEquals(null, testPerson.getName());
     }
 }
