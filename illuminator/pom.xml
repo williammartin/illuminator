@@ -17,6 +17,14 @@
 	<name>Illuminator</name>
 	<description>Illuminator is a simple Reflection library for Java</description>
 	<inceptionYear>2015</inceptionYear>
+	
+	<properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <jdk-version>1.8</jdk-version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -43,10 +51,10 @@
 				<version>3.3</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<source>1.8</source>
-					<target>1.8</target>
-					<testSource>1.8</testSource>
-					<testTarget>1.8</testTarget>
+					<source>${jdk-version}</source>
+					<target>${jdk-version}</target>
+					<testSource>${jdk-version}</testSource>
+					<testTarget>${jdk-version}</testTarget>
 				</configuration>
 			</plugin>
 		</plugins>
