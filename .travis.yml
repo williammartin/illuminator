@@ -1,5 +1,8 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 install: sh -c 'cd illuminator && mvn install -DskipTests=true'
 script: sh -c 'cd illuminator && mvn test'
+notifications:
+  slack:
+    secure: XCWokUB2Tbc7riRuFwneAc9OjXfX1XzweVFewHbWVA8Od6FYiywnMPi7ruggKiYQgGimiuiVpHnHyfncl20ZnQaGMOxTpy/knsCnZ0J4Q90gylBv+CwtKp7dW9HVoFdKVvtmKkWaiwxCDTSXMDDkLxNRucXN+puge4SG3qI8OQc=
