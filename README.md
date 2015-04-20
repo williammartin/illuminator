@@ -1,4 +1,6 @@
 # Illuminator [![Build Status](https://travis-ci.org/williammartin/illuminator.svg?branch=master)](https://travis-ci.org/williammartin/illuminator)
+
+[![Join the chat at https://gitter.im/williammartin/illuminator](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/williammartin/illuminator?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Illuminator is a simple Reflection library for Java. It is both an attempt to avoid the verboseness of the standard Reflection library and an exercise in learning for the author.
 
 # Getting started with Illuminator
