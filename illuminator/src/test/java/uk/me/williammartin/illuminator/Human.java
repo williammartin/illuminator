@@ -1,21 +1,15 @@
 package uk.me.williammartin.illuminator;
 
-public class Person {
-
-    public static final String DEFAULT_NAME = "JOHN DOE";
+public class Human {
 
     private final String name;
     private int age;
-
-    public Person() {
-        this(DEFAULT_NAME);
-    }
-
-    public Person(String name) {
+    
+    public Human(String name) {
         this.name = name;
     }
 
-    public Person(String name, int age) {
+    public Human(String name, int age) {
         this.name = name;
         this.age = age;
     }

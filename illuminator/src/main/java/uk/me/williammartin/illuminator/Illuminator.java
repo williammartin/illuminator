@@ -11,6 +11,7 @@ import org.apache.commons.lang3.ClassUtils;
  *
  * @author William Martin
  * @param <T>
+ * @param <T>
  */
 public class Illuminator<T> {
 
@@ -22,10 +23,28 @@ public class Illuminator<T> {
      *            The class to illuminate
      * @return An instance of Illuminator wrapping the class to illuminate
      */
-    public static <T> Illuminator<T> illuminate(Class<T> clazz) {
-        return new Illuminator<T>(clazz);
+    public static <R> Illuminator<R> illuminate(Class<R> clazz) {
+        return new Illuminator<R>(clazz);
     }
-
+    
+    /**
+     * This is a static utility method and an entry point for illuminating on
+     * classes using string names
+     *
+     * @param  className
+     *             The fully qualified name of the class to illuminate
+     * @return An instance of Illuminator wrapping the class to illuminate
+     */
+    @SuppressWarnings("unchecked")
+    public static <R> Illuminator<R> illuminate(String className) {
+        try {
+            Class<R> type = (Class<R>) Class.forName(className);
+            return illuminate(type);
+        } catch (Exception e) {
+            throw new IlluminatorException(e);
+        }
+    }   
+    
     private final Class<T> clazz;
 
     private Illuminator(Class<T> clazz) {
@@ -36,8 +55,6 @@ public class Illuminator<T> {
      * The construct method corresponds loosely to a constructor.newInstance(),
      * creating a new object of the class the Illuminator object is wrapping
      *
-     * Currently this cannot deal with primitive arguments
-     *
      * @param args
      *            The arguments to be passed to the class constructor
      * @return A new object of the class the Illuminator object is wrapping
@@ -46,16 +63,16 @@ public class Illuminator<T> {
      *             instantiated for some reason
      */
     @SuppressWarnings("unchecked")
-    public T construct(Object... args) throws IlluminatorException {
+    public <S extends T> S construct(Object... args) throws IlluminatorException {
         args = toArray(args);
         try {
             Constructor<?> constructor = findConstructor(args);
-            return (T) constructor.newInstance(args);
+            return (S) constructor.newInstance(args);
         } catch (Exception e) {
             throw new IlluminatorException(e);
         }
     }
-
+    
     // Constructor searching method:
     //    1. Find an exact matching constructor based on types
     //    2. Look for first constructor that matches close argument types e.g. boxed primitives
