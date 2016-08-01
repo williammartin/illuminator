@@ -15,7 +15,7 @@ import org.apache.commons.lang3.ClassUtils;
 public class Illuminator<T> {
 
     /**
-     * This is a static utility method and the entry point for illuminating on
+     * This is a static utility method and an entry point for illuminating on
      * classes
      *
      * @param clazz
@@ -24,6 +24,23 @@ public class Illuminator<T> {
      */
     public static <T> Illuminator<T> illuminate(Class<T> clazz) {
         return new Illuminator<T>(clazz);
+    }
+
+    /**
+     * This is a static utility method and an entry point for illuminating on
+     * classes using string names
+     *
+     * @param  className
+     *             The fully qualified name of the class to illuminate
+     * @return An instance of Illuminator wrapping the class to illuminate
+     */
+    public static Illuminator<?> illuminate(String className) {
+        try {
+            Class<?> clazz = Class.forName(className);
+            return illuminate(clazz);
+        } catch (ClassNotFoundException e) {
+            throw new IlluminatorException(e);
+        }
     }
 
     private final Class<T> clazz;

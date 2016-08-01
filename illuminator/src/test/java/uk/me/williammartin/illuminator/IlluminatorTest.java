@@ -51,4 +51,18 @@ public class IlluminatorTest {
 
         Assert.assertEquals(null, testPerson.getName());
     }
+
+    @Test
+    public void illuminateShouldParseStringClassNameSuccessfully() {
+
+        String NAME = "Robert Paulson";
+        int AGE = 30;
+
+        Person testPerson = (Person) Illuminator
+                                .illuminate("uk.me.williammartin.illuminator.Person")
+                                .construct(NAME, AGE);
+
+        Assert.assertEquals(NAME, testPerson.getName());
+        Assert.assertEquals(AGE, testPerson.getAge());
+    }
 }
